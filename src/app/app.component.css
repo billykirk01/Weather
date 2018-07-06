@@ -1,0 +1,56 @@
+.grid{
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.card{
+    margin-bottom: .5em;
+    margin-left: .25em;
+    margin-right: .25em;
+}
+
+.current-grid{
+    display: grid;
+    grid-template-columns: 10% 40% 50%
+}
+
+.current-icon{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+    padding-right: 10px
+}
+
+.current-summary{
+    padding-top: 10px
+}
+
+.input{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 70px;
+}
+
+.input-field{
+    width: 90%
+}
+
+.main{
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+
+.weather-image-small{
+    margin-right: 20px;
+}
+
+.more-button{
+    margin-left: 20px;
+}
+
+.more-icon{
+    font-size: 20px;
+}

@@ -1,0 +1,121 @@
+<div class="grid" *ngIf="!doingLookup">
+    <div class="main">
+        <mat-card class="card" [ngSwitch]="currentWeather.icon">
+            <div class="current-grid">
+                <div class="current-icon">
+                    <img *ngSwitchCase="'clear-day'" src="../assets/weather-icons/svg/050-sun.svg" class="weather-image-small">
+                    <img *ngSwitchCase="'clear-night'" src="../assets/weather-icons/svg/003-cloudy-4.svg" class="weather-image-small">
+                    <img *ngSwitchCase="'rain'" src="../assets/weather-icons/svg/010-rain-3.svg" class="weather-image-small">
+                    <img *ngSwitchCase="'snow'" src="../assets/weather-icons/svg/008-snow-1.svg" class="weather-image-small">
+                    <img *ngSwitchCase="'sleet'" src="../assets/weather-icons/svg/050-sun.svg" class="weather-image-small">
+                    <img *ngSwitchCase="'wind'" src="../assets/weather-icons/svg/003-cloudy-4.svg" class="weather-image-small">
+                    <img *ngSwitchCase="'fog'" src="../assets/weather-icons/svg/050-sun.svg" class="weather-image-small">
+                    <img *ngSwitchCase="'cloudy'" src="../assets/weather-icons/svg/049-clouds.svg" class="weather-image-small">
+                    <img *ngSwitchCase="'partly-cloudy-day'" src="../assets/weather-icons/svg/003-cloudy-4.svg" class="weather-image-small">
+                    <img *ngSwitchCase="'partly-cloudy-night'" src="../assets/weather-icons/svg/009-cloud.svg" class="weather-image-small">
+                </div>
+                <div class="current-summary">
+                    <mat-card-title>{{ currentWeather.temperature | number:'1.0-0' }}&deg;</mat-card-title>
+                    <mat-card-subtitle>{{ currentWeather.summary }}</mat-card-subtitle>
+                    <mat-card-subtitle>{{ formattedLocation }}</mat-card-subtitle>
+                </div>
+                <div class="input">
+                    <mat-form-field class="input-field">
+                        <input matInput #searchString type="text" placeholder="Enter a location" (keyup.enter)="getWeather(searchString.value); searchString.value=''"
+                        />
+                        <button mat-button *ngIf="searchString.value!=''" matSuffix mat-icon-button aria-label="Clear" (click)="searchString.value=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </mat-card>
+    </div>
+    <div>
+        <mat-card class="card">
+            <mat-list>
+                <h3 mat-subheader>Hourly</h3>
+                <mat-list-item *ngFor="let hour of hourlyWeather | slice:0:6; let i = index" [ngSwitch]="hour.icon">
+                    <img matListAvatar *ngSwitchCase="'clear-day'" src="../assets/weather-icons/svg/050-sun.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'clear-night'" src="../assets/weather-icons/svg/003-cloudy-4.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'rain'" src="../assets/weather-icons/svg/010-rain-3.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'snow'" src="../assets/weather-icons/svg/008-snow-1.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'sleet'" src="../assets/weather-icons/svg/050-sun.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'wind'" src="../assets/weather-icons/svg/003-cloudy-4.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'fog'" src="../assets/weather-icons/svg/050-sun.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'cloudy'" src="../assets/weather-icons/svg/049-clouds.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'partly-cloudy-day'" src="../assets/weather-icons/svg/003-cloudy-4.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'partly-cloudy-night'" src="../assets/weather-icons/svg/009-cloud.svg" class="weather-image-small">
+                    <mat-card-title mat-line>{{ hour.temperature | number:'1.0-0' }}&deg;</mat-card-title>
+                    <mat-card-subtitle mat-line>{{ hour.time*1000 | date:'h aaa' }}</mat-card-subtitle>
+                    <button mat-button matSuffix mat-icon-button class="more-button" (click)="buildActiveWeatherHour(hour)">
+                        <mat-icon class="more-icon">keyboard_arrow_right</mat-icon>
+                    </button>
+                    <mat-divider *ngIf="i != 5"></mat-divider>
+                </mat-list-item>
+            </mat-list>
+        </mat-card>
+    </div>
+    <div>
+        <mat-card class="card">
+            <mat-list>
+                <h3 mat-subheader>Daily</h3>
+                <mat-list-item *ngFor="let day of dailyWeather | slice:0:6; let i = index;" [ngSwitch]="day.icon">
+                    <img matListAvatar *ngSwitchCase="'clear-day'" src="../assets/weather-icons/svg/050-sun.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'clear-night'" src="../assets/weather-icons/svg/003-cloudy-4.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'rain'" src="../assets/weather-icons/svg/010-rain-3.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'snow'" src="../assets/weather-icons/svg/008-snow-1.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'sleet'" src="../assets/weather-icons/svg/050-sun.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'wind'" src="../assets/weather-icons/svg/003-cloudy-4.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'fog'" src="../assets/weather-icons/svg/050-sun.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'cloudy'" src="../assets/weather-icons/svg/049-clouds.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'partly-cloudy-day'" src="../assets/weather-icons/svg/003-cloudy-4.svg" class="weather-image-small">
+                    <img matListAvatar *ngSwitchCase="'partly-cloudy-night'" src="../assets/weather-icons/svg/009-cloud.svg" class="weather-image-small">
+                    <mat-card-title mat-line>{{ day.temperatureHigh | number:'1.0-0' }}&deg; / {{ day.temperatureLow | number:'1.0-0'}}&deg;</mat-card-title>
+                    <mat-card-subtitle mat-line>{{ day.time*1000 | date:'EEEE' }}</mat-card-subtitle>
+                    <button mat-button matSuffix mat-icon-button class="more-button" (click)="buildActiveWeatherDay(day)">
+                        <mat-icon class="more-icon">keyboard_arrow_right</mat-icon>
+                    </button>
+                    <mat-divider *ngIf="i != 5"></mat-divider>
+                </mat-list-item>
+            </mat-list>
+        </mat-card>
+    </div>
+    <div>
+        <mat-card class="card">
+            <mat-list>
+                <h3 mat-subheader>Details</h3>
+            </mat-list>
+            <mat-list>
+                <mat-list-item>
+                    <mat-card-subtitle>{{ activeSummary }}</mat-card-subtitle>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-card-subtitle>Cloud Cover: {{ activeCloudCover | percent}}</mat-card-subtitle>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-card-subtitle>Humidity: {{ activeHumidity | percent}}</mat-card-subtitle>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-card-subtitle>Precipiation: {{ activePrecipiationProbability | percent}}</mat-card-subtitle>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-card-subtitle>Pressure: {{ activePressure | number:'1.0-0' }} Pa</mat-card-subtitle>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-card-subtitle>Wind speed: {{ activeWindSpeed | number:'1.0-0' }} mph</mat-card-subtitle>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-card-subtitle>Wind direction: {{ activeWindDirection }}</mat-card-subtitle>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-card-subtitle>Visibility: {{ activeVisibility }} mi</mat-card-subtitle>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-card-subtitle>UV Index: {{ activeUVIndex }}</mat-card-subtitle>
+                </mat-list-item>
+            </mat-list>
+        </mat-card>
+    </div>
+</div>
